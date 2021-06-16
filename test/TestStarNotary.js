@@ -87,15 +87,33 @@ it('can add the star name and star symbol properly', async() => {
 });
 
 it('lets 2 users exchange stars', async() => {
+    let instance = await StarNotary.deployed();
+    let user1 = accounts[1];
+    let user2 = accounts[2];
     // 1. create 2 Stars with different tokenId
+    // let starName = "Pandora star";
+    let tokenId1 = 100;
+    let tokenId2 = 101;
+    await instance.createStar( "My star", tokenId1, {from: user1} );
+    await instance.createStar( "Your star", tokenId2 , {from : user2});
     // 2. Call the exchangeStars functions implemented in the Smart Contract
+    await instance.exchangeStars(tokenId2, tokenId1 , {from : user2});  
     // 3. Verify that the owners changed
+    assert.equal(await instance.ownerOf(tokenId2), user1 );
+    assert.equal(await instance.ownerOf(tokenId1), user2 )
 });
 
 it('lets a user transfer a star', async() => {
     // 1. create a Star with different tokenId
+    let instance = await StarNotary.deployed();
+    let tokenId = 201;
+    let user1 = accounts[1];
+    let user2 = accounts[2];
+    await instance.createStar( "My star", tokenId ,{from : user1});
     // 2. use the transferStar function implemented in the Smart Contract
+    await instance.transferStar( user2, tokenId ,{ from : user1})
     // 3. Verify the star owner changed.
+    assert.equal(await instance.ownerOf(tokenId), user2 );
 });
 
 it('lookUptokenIdToStarInfo test', async() => {
