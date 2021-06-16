@@ -17,8 +17,8 @@ contract StarNotary is ERC721 {
     // name: Is a short name to your token
     // symbol: Is a short string like 'USD' -> 'American Dollar'
     constructor() public{
-        name = "Serene star";
-        symbol = "SRC";
+        name = "Pandora star";
+        symbol = "PDS";
     }
 
     // mapping the Star with the Owner Address
@@ -62,6 +62,11 @@ contract StarNotary is ERC721 {
     // Implement Task 1 lookUptokenIdToStarInfo
     function lookUptokenIdToStarInfo (uint _tokenId) public view returns (string memory) {
         //1. You should return the Star saved in tokenIdToStarInfo mapping
+        if(bytes(tokenIdToStarInfo[_tokenId].name).length >0){
+             return tokenIdToStarInfo[_tokenId].name;
+        }else{
+              revert();
+        }
     }
 
     // Implement Task 1 Exchange Stars function
